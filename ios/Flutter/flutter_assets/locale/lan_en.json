@@ -1,0 +1,38 @@
+{
+  "main_title": "Login",
+  "enterCode": "Enter Code",
+  "validate": "Validate",
+  "invalidInput": "Invalid Input",
+
+  "streets": "Streets",
+  "NoDataFound": "No Data Found",
+
+  "First Name": "First Name",
+
+  "Phone Number": "Phone Number",
+  "Email": "Email",
+  "Support Level": "Support Level",
+  "Notes": "Notes",
+  "Information saved": "Information saved!",
+
+
+  "Last Name": "Last Name",
+  "Address": "Address",
+  "Email Address": "Email Address",
+  "Supporter": "Supporter",
+  "Last edit": "last edit",
+  "Submit": "submit",
+  "Please enter ": "Please enter ",
+  "Yes": "Yes",
+  "No": "No",
+  "Lawn sign": "Lawn sign",
+  "Donate": "Donate",
+  "Volunteer": "Volunteer",
+  "Street Numbers": "Street Numbers",
+  "People": "People",
+
+  "ChooseOption": "Choose Option",
+  "Map": "Map",
+  "App": "App"
+
+}
