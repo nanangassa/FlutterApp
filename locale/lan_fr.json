@@ -1,0 +1,36 @@
+{
+  "main_title": "S'identifier",
+  "enterCode": "Entrez le code",
+  "validate": "Valider",
+  "invalidInput": "entrée invalide",
+
+  "streets": "Des rues",
+  "NoDataFound": "Aucune donnée disponible",
+
+  "First Name": "Prénom",
+  "Phone Number": "Numéro de téléphone",
+  "Email": "Email",
+  "Support Level": "Niveau de support",
+  "Notes": "Remarques",
+  "Information saved": "Information sauvegardée!",
+
+  "Last Name": "Nom de famille",
+  "Address": "Adresse",
+  "Email Address": "Adresse électronique",
+  "Supporter": "Supporter",
+  "Last edit": "dernière modification",
+  "Submit": "soumettre",
+  "Please enter ": "Entrez s'il vous plait",
+  "Yes": "Oui",
+  "No": "Non",
+  "Lawn sign": "Signe de la pelouse: ",
+  "Donate": "Faire un don: ",
+  "Volunteer": "Bénévole: ",
+  "Street Numbers": "Numéros de rue",
+  "People": "Personnes",
+
+  "ChooseOption": "Choisissez une option",
+  "Map": "Carte",
+  "App": "App"
+
+}

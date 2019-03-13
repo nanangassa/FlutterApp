@@ -1,0 +1,169 @@
+import 'package:flutter/material.dart';
+import 'package:forecanvass/model/PersonModel.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'redirect.dart';
+import 'package:geocoder/geocoder.dart';
+import 'dart:async';
+
+class MyMap extends StatefulWidget {
+  //  final List <Marker> markers = [];
+  final List<Person> peopleList;
+
+  MyMap(this.peopleList, {Key key}) : super(key: key);
+
+  @override
+  _MapState createState() => _MapState();
+}
+
+class _MapState extends State<MyMap> {
+  Completer<GoogleMapController> _controller = Completer();
+  List<LatLng> coordinates = List<LatLng>();
+  double latitude;
+  double longitude;
+
+  static final CameraPosition college = CameraPosition(
+      // bearing: 192.8334901395799,
+      target: LatLng(45.349520, -75.755720),
+      tilt: 29.440717697143555,
+      zoom: 13.151926040649414);
+
+  //Map<String, double> _startLocation; //new Address.fromMap(map);
+  //Map<String, double> _currentLocation;
+  //String error;
+  //Location _location = new Location();
+  //bool _permission = false;
+
+  //LocationData locdata;
+  //LocationData streamLoc;
+  //Location location = Location();
+  // Map<String, double> currentLocation;
+  //var currentLocation1 = <String, double>{};
+
+  // @override
+  //void initState() {
+  // super.initState();
+
+  // initPlatformState() ;
+  //}
+
+  /* initPlatformState() async {
+    Map<String, double> location;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+
+    try {
+      location = await _location.getLocation();
+      _permission = await _location.hasPermission();
+
+      _locationSubscription =
+          _location.onLocationChanged().listen((Map<String, double> result) {
+        print('altitude $result["latitude"]');
+        print('longitude  result["longitude"]');
+        print('accuracy result["accuracy"]');
+        print('altitude result["altitude"]');
+        print('latitude result["latitude"]');
+
+        setState(() {
+          _currentLocation = result;
+        });
+      });
+      error = null;
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        error = 'Permission denied';
+      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+        error =
+            'Permission denied - please ask the user to enable it from the app settings';
+      }
+
+      location = null;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    //if (!mounted) return;
+
+    setState(() {
+      _startLocation = location;
+    });
+  }
+ */
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    // Widget mapwid;
+    return Container(
+      child: new Stack(children: <Widget>[
+        new CustomPaint(
+          size: new Size(width, height),
+        ),
+        new Scaffold(
+          appBar: AppBar(
+            title: Text("Map"),
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  tooltip: "Save. Return to List",
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Redirect(widget.peopleList)),
+                    );
+                  }),
+            ],
+          ),
+
+          body: new Center(
+            child: GoogleMap(
+              initialCameraPosition: college,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              myLocationEnabled: true,
+              compassEnabled: true,
+              trackCameraPosition: true,
+              tiltGesturesEnabled: true,
+            ),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            icon: Icon(Icons.add),
+            onPressed: _onMapCreated,
+            label: Text('Load !'),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Future<void> _onMapCreated() async {
+    var address;
+
+    for (int i = 0; i < widget.peopleList.length; i++) {
+      address = await Geocoder.local.findAddressesFromQuery(
+          widget.peopleList[i].streetNumber.toString() +
+              widget.peopleList[i].streetName);
+      coordinates.add(new LatLng(address.first.coordinates.latitude,
+          address.first.coordinates.longitude));
+    }
+    load();
+  }
+
+  Future<void> load() async {
+    final GoogleMapController mapController = await _controller.future;
+
+    for (var i = 0; i < widget.peopleList.length; i++) {
+      LatLng latlng = LatLng(coordinates[i].latitude, coordinates[i].longitude);
+      InfoWindowText locationName = InfoWindowText(
+          widget.peopleList[i].firstName, widget.peopleList[i].lastName);
+      //    coordinates.forEach((coord){
+      mapController.addMarker(
+        MarkerOptions(position: latlng, infoWindowText: locationName),
+      );
+      mapController.animateCamera(CameraUpdate.newLatLng(latlng));
+    }
+  }
+}
